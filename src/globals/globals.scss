@@ -70,6 +70,10 @@ button {
     transition: background-color .2s ease;
     cursor: pointer;
     border-radius: .25rem;
+
+    &:disabled {
+        opacity: .6;
+    }
 }
 
 // li {
@@ -147,3 +151,8 @@ button {
 //     margin-bottom: 1rem;
 
 // }
+
+
+.MuiSelect-select {
+    min-width: 2rem !important;
+}

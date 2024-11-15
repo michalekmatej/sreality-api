@@ -1,6 +1,7 @@
 import { ThemeToggler } from "@components/ThemeToggler/ThemeToggler";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const App = () => {
   return (
@@ -16,29 +17,60 @@ const App = () => {
   )
 }
 
+const PER_PAGE_OPTIONS = [10, 20, 50, 100];
+
 export default App;
 
-const fetchEstates = async (page: number, perPage: number = 10) => {
+const fetchData = async (page: number, perPage: number = 10) => {
   const response = await fetch(`/api/api/cs/v2/estates?per_page=${perPage}&page=${page}`);
   const data = await response.json();
-  return data._embedded.estates;
+  return data;
 };
 
 export const Test = () => {
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const [perPage, setPerPage] = useState(10);
 
-  const { data: estates, isLoading, isError } = useQuery({
+  // handle fetching data
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['estates', page, perPage],
-    queryFn: () => fetchEstates(page, perPage),
+    queryFn: () => fetchData(page, perPage),
   });
 
+  // extract estates list from the data
+  let estates: any[] = data?._embedded?.estates || [];
+  let totalResults: number | null = data?.result_size;
+  let max_page: number | null = useMemo(() => totalResults && Math.ceil(totalResults / perPage), [totalResults, perPage]);
+
+  // pre-fetching
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (max_page && page < max_page) {
+      const nextPage = page + 1;
+      queryClient.prefetchQuery({
+        queryKey: ['estates', nextPage, perPage],
+        queryFn: () => fetchData(nextPage, perPage),
+      });
+    }
+    const prevPage = page - 1;
+    if (prevPage > 0) {
+      queryClient.prefetchQuery({
+        queryKey: ['estates', prevPage, perPage],
+        queryFn: () => fetchData(prevPage, perPage),
+      });
+    }
+  }, [page, max_page, queryClient]);
+
+
+  // page navigation
   const goToPreviousPage = () => {
     if (page <= 1) return;
     setPage(page - 1);
   }
 
   const goToNextPage = () => {
+    if (max_page && page >= max_page) return;
     setPage(page + 1);
   }
 
@@ -70,7 +102,22 @@ export const Test = () => {
         })} /> */}
       </ul>
       <button onClick={goToPreviousPage} disabled={page <= 1}>previous page</button>
+      <span>page: {page} / {max_page}</span>
       <button onClick={goToNextPage}>next page</button>
+      <FormControl>
+        <InputLabel id="select-label">Per Page</InputLabel>
+        <Select
+          labelId="select-label"
+          id="select"
+          value={perPage}
+          label="Per Page"
+          onChange={(e) => setPerPage(Number(e.target.value))}
+        >
+          {PER_PAGE_OPTIONS.map((option) => (
+            <MenuItem key={option} value={option}>{option}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </section>
   )
 }
