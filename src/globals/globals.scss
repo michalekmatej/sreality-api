@@ -1,0 +1,149 @@
+// @use 'normalize.css' as *;
+@use '_variables.scss' as *;
+
+// -------------------------
+
+:root {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+}
+
+html {
+    color-scheme: light dark;
+}
+
+[data-theme='light'] {
+    --background: #{$background-light};
+    --text: #{$text-light};
+    --btn-color: #{$btn-color-light};
+}
+
+[data-theme='dark'] {
+    --background: #{$background-dark};
+    --text: #{$text-dark};
+    --btn-color: #{$btn-color-dark};
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text);
+    transition: background-color .2s ease;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    color: var(--text);
+    box-sizing: border-box;
+}
+
+#root {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    background-color: var(--btn-color);
+    color: var(--text);
+    padding: .5rem 1.5rem;
+    border: none;
+    transition: background-color .2s ease;
+    cursor: pointer;
+    border-radius: .25rem;
+}
+
+// li {
+//     list-style: none;
+// }
+
+// p,
+// a,
+// li {
+//     line-height: 1.6;
+// }
+
+
+// button,
+// .primary-btn,
+// .secondary-btn {
+//     padding: .5rem 1.5rem;
+//     border: none;
+//     transition: background-color .2s ease;
+//     cursor: pointer;
+//     border-radius: $border-radius;
+// }
+
+
+// button,
+// .primary-btn {
+//     background-color: $primary-color;
+//     color: white;
+
+//     &:hover {
+//         background-color: $primary-color-dark;
+//     }
+// }
+
+// .secondary-btn {
+//     background-color: transparent;
+//     color: $primary-color;
+
+//     &:hover {
+//         background-color: #4f4f4f13;
+//     }
+// }
+
+// a {
+//     color: $primary-color;
+//     text-decoration: none;
+//     padding: .5rem;
+//     transition: all .2s ease;
+//     display: inline-block;
+
+//     &.primary-a {
+//         position: relative;
+//         padding-right: 1.5rem;
+//         box-sizing: content-box;
+
+//         &::after {
+//             content: '>';
+//             position: absolute;
+//             right: 5px;
+//             transition: right .2s ease;
+//         }
+
+//         &:hover {
+//             color: $primary-color-dark;
+
+//             &::after {
+//                 right: 0px;
+//             }
+//         }
+//     }
+// }
+
+// h2 {
+//     margin-top: 1rem;
+//     margin-bottom: 1rem;
+
+// }
