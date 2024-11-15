@@ -154,5 +154,39 @@ button {
 
 
 .MuiSelect-select {
-    min-width: 2rem !important;
+    min-width: 3rem !important;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        cursor: pointer;
+
+        &.ascending::after {
+            content: "↑";
+            margin-left: 5px;
+        }
+
+        &.descending::after {
+            content: "↓";
+            margin-left: 5px;
+        }
+    }
+
+    td {
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+    }
 }
