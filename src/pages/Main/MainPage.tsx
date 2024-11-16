@@ -1,17 +1,13 @@
-import { ThemeToggler } from "@components/ThemeToggler/ThemeToggler";
+import { Navbar } from "@/components/Navbar/Navbar";
 import { TableSection } from "./components/TableSection/TableSection";
+import "./MainPage.scss";
 
 const MainPage = () => {
     return (
-        <div>
-            <div className="flex">
-                <h1>Hello world</h1>
-                <ThemeToggler />
-            </div>
-
+        <>
+            <Navbar />
             <TableSection />
-
-        </div>
+        </>
     )
 }
 

@@ -10,7 +10,7 @@ export const ThemeToggler = () => {
                 onChange={toggleTheme}
                 inputProps={{ "aria-label": "controlled" }}
             />
-            <span>{theme === "dark" ? "Dark" : "Light"}</span>
+            <span>{theme === "dark" ? "Tmavý" : "Světlý"}</span>
         </div>
 
     )

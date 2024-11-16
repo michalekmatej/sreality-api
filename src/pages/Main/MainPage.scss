@@ -1,0 +1,127 @@
+html,
+body {
+    height: 100vh;
+    height: 100svh;
+    min-height: 100vh;
+    min-height: 100svh;
+    // width: 100vw;
+    // min-width: 100vw;
+    // overflow: hidden;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.table-section {
+    width: 100%;
+    font-size: .75rem;
+    flex: 1;
+    flex-basis: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    // overflow-x: auto;
+
+    // custom scrollbar
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .table-wrapper {
+        flex: 1;
+        flex-basis: 0;
+        overflow: auto;
+
+        table {
+            width: 100%;
+            min-width: 40rem;
+
+            thead {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+
+                // to hide 1px glitch while scrolling table
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: -1px;
+                    left: 0;
+                    right: 0;
+                    height: 2px;
+                    background-color: var(--btn-color);
+                }
+            }
+
+            thead,
+            tbody {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+            }
+        }
+    }
+
+    .placeholder {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .table-navigation {
+
+        button,
+        p,
+        select,
+        span {
+            font-size: .75rem;
+
+        }
+
+        display: grid;
+        grid-template: ". main perPage" 1fr / 1fr 1fr 1fr;
+
+        .main {
+            grid-area: main;
+            justify-self: center;
+        }
+
+        .per-page {
+            grid-area: perPage;
+            justify-self: end;
+        }
+
+        @media (max-width: 768px) {
+            button {
+                padding-inline: 1rem;
+            }
+
+            .paging {
+                padding-inline: .5rem;
+            }
+
+            .per-page {
+                select {
+                    padding-inline: .5rem;
+                    // min-width: 2rem;
+                }
+            }
+        }
+    }
+}

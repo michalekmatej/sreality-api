@@ -1,6 +1,10 @@
-#not-found {
+#root {
+    justify-content: center;
+}
+
+.not-found {
     text-align: center;
-    margin: auto;
+    height: fit-content;
 
     h1 {
         margin-bottom: 1rem;

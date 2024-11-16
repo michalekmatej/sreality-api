@@ -43,6 +43,7 @@ body {
 
 #root {
     flex: 1;
+    height: 100%;
     overflow: hidden;
     position: relative;
     display: flex;
@@ -93,6 +94,7 @@ select {
 }
 
 table {
+
     th,
     td {
         border: 1px solid var(--btn-color);

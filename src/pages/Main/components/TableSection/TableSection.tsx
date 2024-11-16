@@ -2,9 +2,9 @@ import { IJsonTableProps, JsonToTable } from "@/components/JsonToTable/JsonToTab
 import { TableNavigation } from "@/components/TableNavigation/TableNavigation";
 import { API } from "@/globals/api";
 import { translateAPIField } from "@/globals/globals";
+import { CircularProgress } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
-import "./TableSection.scss";
 
 export const TableSection = () => {
     const [page, setPage] = useState(1);
@@ -71,14 +71,15 @@ export const TableSection = () => {
     return (
         <section className="table-section">
 
-            {isLoading ? <div>Loading...</div> :
-                isError ? <div>Error loading estates</div> :
-                    <JsonToTable data={dataToDisplay} />
+            {isLoading ? <div className="loading placeholder"><CircularProgress size={30} /></div> :
+                isError ? <div className="error placeholder">Error loading estates</div> :
+                    <div className="table-wrapper">
+                        <JsonToTable data={dataToDisplay} />
+                    </div>
             }
 
             <TableNavigation
                 page={page}
-                itemsPerPage={perPage}
                 numberOfPages={max_page || 0}
                 goToNextPage={goToNextPage}
                 goToPreviousPage={goToPreviousPage}

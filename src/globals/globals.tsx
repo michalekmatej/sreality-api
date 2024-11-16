@@ -11,7 +11,7 @@ export const API_FIELDS_MAPPING: IApiFieldsMapping = {
         1: "byt",
         2: "dům",
         3: "pozemek",
-        4: "komerční nemovitost a nebytový prostor",
+        4: "komerční",
         5: "ostatní",
     },
     category_type_cb: {

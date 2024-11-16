@@ -3,7 +3,7 @@ import "./NotFoundPage.scss";
 
 const NotFoundPage = () => {
     return (
-        <main id="not-found" className="container">
+        <main className="not-found container">
             <h1>Stránka nenalezena</h1>
             <p>Stránka, kterou hledáte, neexistuje.</p>
             <Link to="/">Zpět na hlavní stránku</Link>
