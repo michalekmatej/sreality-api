@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './JsonToTable.scss';
 
 // -------------------------------------
 
@@ -55,7 +56,7 @@ export const JsonToTable = ({ data }: { data: IJsonTableProps }) => {
     });
 
     return (
-        <table className="table">
+        <table className="json-to-table">
             <thead>
                 <tr>
                     {columns.map((column) => (
@@ -83,6 +84,8 @@ export const JsonToTable = ({ data }: { data: IJsonTableProps }) => {
                                     new Intl.NumberFormat('cs-CZ', {
                                         style: 'currency',
                                         currency: 'CZK',
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
                                     }).format(row[column])
                                 ) : (
                                     row[column]

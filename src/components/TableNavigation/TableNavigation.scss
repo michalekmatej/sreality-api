@@ -1,0 +1,37 @@
+.table-navigation {
+    display: flex;
+    align-items: stretch;
+    margin: 0 auto;
+    height: 2.5rem;
+    margin: 1rem;
+
+    .previous-btn,
+    .next-btn {}
+
+    .paging,
+    label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: .5rem 1rem;
+    }
+
+    .paging {
+
+        .current-page,
+        .max-page {
+            margin-inline: .3rem;
+        }
+
+        .current-page {
+            min-width: 1.25rem;
+            text-align: right;
+        }
+    }
+
+    label {
+        margin-left: 1rem;
+    }
+
+    select {}
+}

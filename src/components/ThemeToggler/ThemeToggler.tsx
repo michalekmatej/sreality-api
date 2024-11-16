@@ -1,4 +1,4 @@
-import { useTheme } from "@components/ThemeContext/ThemeContext";
+import { useTheme } from "@/lib/themeContext/themeContext";
 import { Switch } from "@mui/material";
 
 export const ThemeToggler = () => {

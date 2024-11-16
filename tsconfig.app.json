@@ -21,6 +21,7 @@
       "@components/*": ["src/components/*"],
       "@globals/*": ["src/globals/*"],
       "@pages/*": ["src/pages/*"],
+      "@lib/*": ["src/lib/*"],
     },
 
     /* Linting */

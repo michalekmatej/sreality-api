@@ -20,6 +20,7 @@ export default defineConfig({
       "@components": resolve(__dirname, "src/components"),
       "@globals": resolve(__dirname, "src/globals"),
       "@pages": resolve(__dirname, "src/pages"),
+      "@lib": resolve(__dirname, "src/lib"),
     },
   },
 })

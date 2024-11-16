@@ -38,12 +38,15 @@ body {
     margin: 0;
     color: var(--text);
     box-sizing: border-box;
+    font-family: "Inter", sans-serif;
 }
 
 #root {
     flex: 1;
     overflow: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -73,6 +76,31 @@ button {
 
     &:disabled {
         opacity: .6;
+    }
+}
+
+a {
+    color: $primary-color;
+}
+
+select {
+    background-color: var(--btn-color);
+    color: var(--text);
+    border: none;
+    padding: .7rem;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+table {
+    th,
+    td {
+        border: 1px solid var(--btn-color);
+        padding: 8px;
+    }
+
+    th {
+        background-color: var(--btn-color);
     }
 }
 
@@ -151,42 +179,3 @@ button {
 //     margin-bottom: 1rem;
 
 // }
-
-
-.MuiSelect-select {
-    min-width: 3rem !important;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid black;
-
-    th,
-    td {
-        border: 1px solid black;
-        padding: 8px;
-    }
-
-    th {
-        background-color: #f2f2f2;
-        cursor: pointer;
-
-        &.ascending::after {
-            content: "↑";
-            margin-left: 5px;
-        }
-
-        &.descending::after {
-            content: "↓";
-            margin-left: 5px;
-        }
-    }
-
-    td {
-        a {
-            text-decoration: none;
-            color: blue;
-        }
-    }
-}
