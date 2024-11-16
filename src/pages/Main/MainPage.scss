@@ -17,7 +17,7 @@ body {
 
 .table-section {
     width: 100%;
-    font-size: .75rem;
+    // font-size: .75rem;
     flex: 1;
     flex-basis: 0;
     display: flex;
@@ -85,14 +85,13 @@ body {
     }
 
     .table-navigation {
+        // button,
+        // p,
+        // select,
+        // span {
+        //     font-size: .75rem;
 
-        button,
-        p,
-        select,
-        span {
-            font-size: .75rem;
-
-        }
+        // }
 
         display: grid;
         grid-template: ". main perPage" 1fr / 1fr 1fr 1fr;

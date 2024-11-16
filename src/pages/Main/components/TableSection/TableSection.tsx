@@ -5,17 +5,23 @@ import { translateAPIField } from "@globals/globals";
 import { CircularProgress } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
+import { IFilters } from "@components/FilterSelectDropdowns/FilterSelectDropdowns";
 
+interface ITableProps {
+    page: number;
+    setPage: (page: number) => void;
+    filters: IFilters;
+}
 
-export const TableSection = ({ pageNumber }: { pageNumber: Number }) => {
+export const TableSection = ({ page, setPage, filters }: ITableProps) => {
     // -------- state --------
-    const [page, setPage] = useState(Number(pageNumber));
+    // const [page, setPage] = useState(Number(pageNumber));
     const [perPage, setPerPage] = useState(10);
 
     // -------- fetching data --------
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['estates', page, perPage],
-        queryFn: () => API.fetchData(page, perPage),
+        queryKey: ['estates', page, perPage, filters],
+        queryFn: () => API.fetchData(page, perPage, filters),
     });
 
     // -------- extracting estates list from the data --------
@@ -43,8 +49,8 @@ export const TableSection = ({ pageNumber }: { pageNumber: Number }) => {
     useEffect(() => {
         const prefetch = (page: number) => {
             queryClient.prefetchQuery({
-                queryKey: ['estates', page, perPage],
-                queryFn: () => API.fetchData(page, perPage),
+                queryKey: ['estates', page, perPage, filters],
+                queryFn: () => API.fetchData(page, perPage, filters),
             });
         }
 
@@ -65,10 +71,6 @@ export const TableSection = ({ pageNumber }: { pageNumber: Number }) => {
         if (max_page && page >= max_page) return;
         setPage(page + 1);
     }
-
-    useEffect(() => {
-        window.history.pushState(null, "", `/page/${page}`);
-    }, [page]);
 
     // -------- rendering --------
     // if (isLoading) return <div>Loading...</div>;

@@ -1,0 +1,15 @@
+.filters {
+    display: flex;
+    padding: .5rem 1rem;
+    gap: 1rem;
+    justify-content: end;
+
+    .filter {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        .filter-label {}
+
+        .filter-select {}
+    }
+}

@@ -1,6 +1,7 @@
 import { Navbar } from "@components/Navbar/Navbar";
+import { FilterSelectDropdowns, IFilters } from "@components/FilterSelectDropdowns/FilterSelectDropdowns";
 import { TableSection } from "./components/TableSection/TableSection";
-import { useEffect } from "react";
+import { useEffect, useState, } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./MainPage.scss";
 
@@ -21,10 +22,31 @@ const MainPage = () => {
         }
     }, [pageNumber, navigate]);
 
+
+    // -------- state --------
+    const [page, setPage] = useState<number | null>(Number(pageNumber));
+    const [filterValues, setFilterValues] = useState<IFilters>({});
+
+    const handleFilterChange = (value: IFilters) => {
+        setFilterValues(value);
+        setPage(1);
+    }
+
+    useEffect(() => {
+        if (!page) return;
+        navigate(`/page/${page}`, { replace: true });
+    }, [page, navigate]);
+
     return (
         <>
             <Navbar />
-            <TableSection pageNumber={pageNumber ? Number(pageNumber) : 1} />
+            <FilterSelectDropdowns updateState={handleFilterChange} />
+            <TableSection
+                // key={page}
+                filters={filterValues}
+                page={page ? Number(page) : 1}
+                setPage={setPage}
+            />
         </>
     )
 }
