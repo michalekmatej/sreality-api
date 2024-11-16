@@ -12,17 +12,11 @@ const App = () => {
     >
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/page/:pageNumber" element={<MainPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   )
 }
-
-// interface IEstate {
-//   name: string;
-//   price: number;
-//   type: 1 | 2 | 3;
-//   images: string;
-// }
 
 export default App;

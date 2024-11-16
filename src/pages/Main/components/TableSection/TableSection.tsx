@@ -1,17 +1,19 @@
-import { IJsonTableProps, JsonToTable } from "@/components/JsonToTable/JsonToTable";
-import { TableNavigation } from "@/components/TableNavigation/TableNavigation";
-import { API } from "@/globals/api";
-import { translateAPIField } from "@/globals/globals";
+import { IJsonTableProps, JsonToTable } from "@components/JsonToTable/JsonToTable";
+import { TableNavigation } from "@components/TableNavigation/TableNavigation";
+import { API } from "@lib/api";
+import { translateAPIField } from "@globals/globals";
 import { CircularProgress } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
 
-export const TableSection = () => {
-    const [page, setPage] = useState(1);
+
+export const TableSection = ({ pageNumber }: { pageNumber: Number }) => {
+    // -------- state --------
+    const [page, setPage] = useState(Number(pageNumber));
     const [perPage, setPerPage] = useState(10);
 
     // -------- fetching data --------
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryKey: ['estates', page, perPage],
         queryFn: () => API.fetchData(page, perPage),
     });
@@ -64,6 +66,10 @@ export const TableSection = () => {
         setPage(page + 1);
     }
 
+    useEffect(() => {
+        window.history.pushState(null, "", `/page/${page}`);
+    }, [page]);
+
     // -------- rendering --------
     // if (isLoading) return <div>Loading...</div>;
     // if (isError) return <div>Error loading estates</div>;
@@ -72,7 +78,7 @@ export const TableSection = () => {
         <section className="table-section">
 
             {isLoading ? <div className="loading placeholder"><CircularProgress size={30} /></div> :
-                isError ? <div className="error placeholder">Error loading estates</div> :
+                isError ? <div className="error placeholder">{error.message}</div> :
                     <div className="table-wrapper">
                         <JsonToTable data={dataToDisplay} />
                     </div>
