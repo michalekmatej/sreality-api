@@ -1,7 +1,7 @@
 import { IJsonTableProps, JsonToTable } from "@components/JsonToTable/JsonToTable";
 import { TableNavigation } from "@components/TableNavigation/TableNavigation";
 import { API } from "@lib/api";
-import { translateAPIField } from "@globals/globals";
+import { formatCurrency, formatDataForTable, IEstate, translateAPIField } from "@globals/globals";
 import { CircularProgress } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
@@ -17,31 +17,20 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
     // -------- state --------
     // const [page, setPage] = useState(Number(pageNumber));
     const [perPage, setPerPage] = useState(10);
+    const [localUpdates, setLocalUpdates] = useState<IEstate[]>([]);
 
     // -------- fetching data --------
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ['estates', page, perPage, filters],
-        queryFn: () => API.fetchData(page, perPage, filters),
+        queryFn: () => API.fetchEstates(page, perPage, filters),
     });
 
     // -------- extracting estates list from the data --------
-    let estates: any[] = data?._embedded?.estates || [];
+    let estates: IEstate[] = data?._embedded?.estates || [];
     let totalResults: number | null = data?.result_size;
     let max_page: number | null = useMemo(() => totalResults && Math.ceil(totalResults / perPage), [totalResults, perPage]);
 
-    const dataToDisplay: IJsonTableProps = {
-        rows: estates.map((estate) => {
-            return {
-                "Název": estate.name,
-                "Typ": translateAPIField("category_type_cb", estate.seo.category_type_cb),
-                "Kategorie": translateAPIField("category_main_cb", estate.seo.category_main_cb),
-                "Typ nemovitosti": translateAPIField("category_sub_cb", estate.seo.category_sub_cb),
-                "Lokalita": estate.locality,
-                "Cena": estate.price,
-                "Fotka": estate._links.images[0].href
-            }
-        })
-    }
+    const dataToDisplay: IJsonTableProps = formatDataForTable(estates);
 
     // -------- pre-fetching --------
     const queryClient = useQueryClient();
@@ -50,7 +39,7 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
         const prefetch = (page: number) => {
             queryClient.prefetchQuery({
                 queryKey: ['estates', page, perPage, filters],
-                queryFn: () => API.fetchData(page, perPage, filters),
+                queryFn: () => API.fetchEstates(page, perPage, filters),
             });
         }
 

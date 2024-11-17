@@ -6,6 +6,14 @@ import './JsonToTable.scss';
 export interface IJsonTableProps {
     rows: {
         [key: string]: any;
+        "Název": string;
+        "Typ": string;
+        "Kategorie": string;
+        "Typ nemovitosti": string;
+        "Lokalita": string;
+        "Cena": string;
+        "Fotka": React.ReactNode;
+        "Detail": React.ReactNode;
     }[];
 }
 
@@ -75,21 +83,7 @@ export const JsonToTable = ({ data }: { data: IJsonTableProps }) => {
                     <tr key={rowIndex}>
                         {columns.map((column) => (
                             <td key={column}>
-                                {column === 'Fotka' ? (
-                                    <a href={row[column]} target="_blank" rel="noopener noreferrer">
-                                        Zobrazit fotku
-                                    </a>
-                                ) : column === 'Cena' ? (
-                                    // price format
-                                    new Intl.NumberFormat('cs-CZ', {
-                                        style: 'currency',
-                                        currency: 'CZK',
-                                        minimumFractionDigits: 0,
-                                        maximumFractionDigits: 0
-                                    }).format(row[column])
-                                ) : (
-                                    row[column]
-                                )}
+                                {row[column]}
                             </td>
                         ))}
                     </tr>

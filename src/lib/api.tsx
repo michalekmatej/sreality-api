@@ -2,7 +2,7 @@ import { IFilters } from "@/components/FilterSelectDropdowns/FilterSelectDropdow
 
 export class API {
 
-    public static fetchData = async (page: number = 1, perPage: number = 10, filters: IFilters = {}) => {
+    public static fetchEstates = async (page: number = 1, perPage: number = 10, filters: IFilters = {}) => {
         if (page <= 0 || perPage <= 0) {
             throw new Error('Error fetching data: Page and perPage must be greater than 0');
         }
@@ -32,4 +32,21 @@ export class API {
         }
     };
 
+
+    public static fetchEstateDetail = async (hash_id: string) => {
+        try {
+            const url = `/api/api/cs/v2/estates/${hash_id}`;
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(`Error fetching data: ${response.status} - ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error: any) {
+            console.error('Error fetching data', error);
+            throw new Error(`Error fetching data: ${error.message}`);
+        }
+    };
 }

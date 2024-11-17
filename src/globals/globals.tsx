@@ -1,3 +1,4 @@
+import { IJsonTableProps } from "@/components/JsonToTable/JsonToTable";
 
 
 interface IApiFieldsMapping {
@@ -89,4 +90,37 @@ export const translateAPIField = (field: string, value: number): string => {
 };
 
 export const PER_PAGE_OPTIONS = [10, 20, 50, 100];
+
+
+export const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat('cs-CZ', {
+        style: 'currency',
+        currency: 'CZK',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(value);
+}
+
+
+// implement interface for table API data
+export interface IEstate {
+    [key: string]: any;
+}
+
+export const formatDataForTable = (estates: IEstate[]): IJsonTableProps => {
+    return {
+        rows: estates.map((estate: IEstate) => {
+            return {
+                "Název": estate.name,
+                "Typ": translateAPIField("category_type_cb", estate.seo.category_type_cb),
+                "Kategorie": translateAPIField("category_main_cb", estate.seo.category_main_cb),
+                "Typ nemovitosti": translateAPIField("category_sub_cb", estate.seo.category_sub_cb),
+                "Lokalita": estate.locality,
+                "Cena": formatCurrency(estate.price),
+                "Fotka": <a href={estate._links.images[0].href} target="_blank" rel="noopener noreferrer">Zobrazit fotku</a>,
+                "Detail": <a href={`estate/${estate.hash_id}`}>Zobrazit detail</a>,
+            }
+        })
+    }
+}
 
