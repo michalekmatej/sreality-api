@@ -1,54 +1,72 @@
 import { Navbar } from "@components/Navbar/Navbar";
 import { FilterSelectDropdowns, IFilters } from "@components/FilterSelectDropdowns/FilterSelectDropdowns";
 import { TableSection } from "./components/TableSection/TableSection";
-import { useEffect, useState, } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import "./MainPage.scss";
 
 const MainPage = () => {
-    const { pageNumber } = useParams();
-    const navigate = useNavigate();
-
-    // -------- redirecting to the first page if no page number is provided --------
-    useEffect(() => {
-        if (!pageNumber) {
-            navigate("/page/1", { replace: true });
-            return;
-        }
-        // if page number is not a number, redirect to 404
-        if (isNaN(Number(pageNumber))) {
-            navigate("/not-found", { replace: true });
-            return;
-        }
-    }, [pageNumber, navigate]);
-
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // -------- state --------
-    const [page, setPage] = useState<number | null>(Number(pageNumber));
+    const [page, setPage] = useState<number>(1);
     const [filterValues, setFilterValues] = useState<IFilters>({});
 
-    const handleFilterChange = (value: IFilters) => {
-        setFilterValues(value);
-        setPage(1);
-    }
-
+    // -------- initialize state --------
     useEffect(() => {
-        if (!page) return;
-        navigate(`/page/${page}`, { replace: true });
-    }, [page, navigate]);
+        // init page number from URL
+        const initialPage = searchParams.get('page') || '1';
+        setPage(Number(initialPage));
+
+        // get filters from URL, excluding the 'page' parameter
+        const filters: IFilters = {};
+        searchParams.forEach((value, key) => {
+            if (key !== 'page') { 
+                filters[key] = value;
+            }
+        });
+        setFilterValues(filters);
+    }, [searchParams]);
+
+    // -------- update URL with filters --------
+    useEffect(() => {
+        if (filterValues) {
+            // set filters in URL, but don't reset page unless filters change
+            if (Object.keys(filterValues).length > 0) {
+                setSearchParams({ page: '1', ...filterValues });
+            } else {
+                setSearchParams({ page: page.toString() });
+            }
+        }
+    }, [filterValues, page, setSearchParams]);
+
+    // -------- update URL when page changes --------
+    useEffect(() => {
+        if (page) {
+            setSearchParams({ page: page.toString(), ...filterValues });
+        }
+    }, [page, filterValues, setSearchParams]);
+
+    // -------- handle filter changes --------
+    const handleFilterChange = (newFilters: IFilters) => {
+        setFilterValues(newFilters);
+        setPage(1);
+    };
 
     return (
         <>
             <Navbar />
-            <FilterSelectDropdowns updateState={handleFilterChange} />
-            <TableSection
-                // key={page}
+            <FilterSelectDropdowns
                 filters={filterValues}
-                page={page ? Number(page) : 1}
+                setFilters={handleFilterChange} 
+            />
+            <TableSection
+                filters={filterValues}
+                page={page}
                 setPage={setPage}
             />
         </>
-    )
-}
+    );
+};
 
 export default MainPage;

@@ -47,6 +47,10 @@ body {
         flex-basis: 0;
         overflow: auto;
 
+        display: flex;
+        flex-direction: column;
+
+
         table {
             width: 100%;
             min-width: 40rem;
@@ -75,6 +79,12 @@ body {
                 table-layout: fixed;
             }
         }
+
+        .no-results {
+            margin: auto;
+            justify-self: center;
+        }
+
     }
 
     .placeholder {

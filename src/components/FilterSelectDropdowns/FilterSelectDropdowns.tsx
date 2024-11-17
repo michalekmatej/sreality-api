@@ -1,27 +1,44 @@
 import { API_FIELDS_MAPPING } from "@/globals/globals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./FilterSelectDropdowns.scss";
 
 interface IFiltersProps {
-    updateState: (value: any) => void;
+    filters: IFilters;
+    setFilters: (value: any) => void;
 }
 
 export interface IFilters {
     [key: string]: string;
 }
 
-const FilterSelectDropdowns = ({ updateState }: IFiltersProps) => {
+const FilterSelectDropdowns = ({ filters, setFilters }: IFiltersProps) => {
     const [selectedValues, setSelectedValues] = useState<IFilters>({});
+
+    // Set selected values and filters
+    useEffect(() => {
+        setSelectedValues(filters);
+    }, [filters]);
 
     const handleChange = (field: string, value: string) => {
         setSelectedValues((prev) => ({
             ...prev,
             [field]: value,
         }));
-        updateState((prev: any) => ({
-            ...prev,
-            [field]: value,
-        }));
+
+        // Only set the filter if the value is not empty
+        setFilters((prev: any) => {
+            const updatedFilters = { ...prev };
+
+            if (value === '') {
+                // Remove the filter if value is empty
+                delete updatedFilters[field];
+            } else {
+                // Otherwise, update the filter
+                updatedFilters[field] = value;
+            }
+
+            return updatedFilters;
+        });
     };
 
     return (
@@ -44,7 +61,6 @@ const FilterSelectDropdowns = ({ updateState }: IFiltersProps) => {
                     </select>
                 </div>
             ))}
-            {/* <pre>Selected Values: {JSON.stringify(selectedValues, null, 2)}</pre> */}
         </div>
     );
 };

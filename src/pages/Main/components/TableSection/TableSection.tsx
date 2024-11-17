@@ -82,7 +82,10 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
             {isLoading ? <div className="loading placeholder"><CircularProgress size={30} /></div> :
                 isError ? <div className="error placeholder">{error.message}</div> :
                     <div className="table-wrapper">
-                        <JsonToTable data={dataToDisplay} />
+                        {dataToDisplay.rows.length === 0 ?
+                            <div className="no-results">Nenalezeny žádné výsledky</div> :
+                            <JsonToTable data={dataToDisplay} />
+                        }
                     </div>
             }
 

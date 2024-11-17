@@ -32,7 +32,6 @@ export const API_FIELDS_MAPPING: IApiFieldsMapping = {
     category_sub_cb: {
         name: "Specifikace",
         data: {
-            1: "N/A",
             2: "1+kk",
             3: "1+1",
             4: "2+kk",
