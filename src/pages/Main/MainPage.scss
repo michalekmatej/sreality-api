@@ -50,7 +50,7 @@ body {
 
         table {
             width: 100%;
-            min-width: 40rem;
+            min-width: 70rem;
 
             thead {
                 position: sticky;
@@ -69,12 +69,12 @@ body {
                 }
             }
 
-            thead,
-            tbody {
-                display: table;
-                width: 100%;
-                table-layout: fixed;
-            }
+            // thead,
+            // tbody {
+            //     display: table;
+            //     width: 100%;
+            //     table-layout: fixed;
+            // }
         }
 
         .no-results {

@@ -85,12 +85,17 @@ a {
     color: $primary-color;
 }
 
-select {
+select,
+input {
     background-color: var(--btn-color);
     color: var(--text);
     border: none;
     padding: .7rem;
     border-radius: .25rem;
+    font-size: inherit;
+}
+
+select {
     cursor: pointer;
 }
 

@@ -4,12 +4,13 @@
     gap: 1rem;
     justify-content: end;
 
-    .filter {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-        .filter-label {}
+}
 
-        .filter-select {}
-    }
+.filter-select-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    .filter-label {}
+
+    .filter-select {}
 }

@@ -3,18 +3,21 @@ import './JsonToTable.scss';
 
 // -------------------------------------
 
+export interface IJsonTableProp {
+    [key: string]: any;
+    "Název": string;
+    "Typ inzerátu": string;
+    "Kategorie": string;
+    "Typ nemovitosti": string;
+    "Lokalita": string;
+    "Cena": string;
+    "Fotka": React.ReactNode;
+    "Detail": React.ReactNode | null;
+}
+
+
 export interface IJsonTableProps {
-    rows: {
-        [key: string]: any;
-        "Název": string;
-        "Typ": string;
-        "Kategorie": string;
-        "Typ nemovitosti": string;
-        "Lokalita": string;
-        "Cena": string;
-        "Fotka": React.ReactNode;
-        "Detail": React.ReactNode;
-    }[];
+    rows: IJsonTableProp[];
 }
 
 interface ISortConfig {
@@ -32,7 +35,8 @@ export const JsonToTable = ({ data }: { data: IJsonTableProps }) => {
 
     // default values for sorting
     const [sortConfig, setSortConfig] = useState<ISortConfig>({
-        key: columns[0],
+        // key: columns[0],
+        key: null,
         direction: 'ascending',
     });
 

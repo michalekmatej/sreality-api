@@ -1,5 +1,3 @@
-import { IJsonTableProps } from "@/components/JsonToTable/JsonToTable";
-
 
 interface IApiFieldsMapping {
     [key: string]: {
@@ -14,24 +12,24 @@ export const API_FIELDS_MAPPING: IApiFieldsMapping = {
     category_type_cb: {
         name: "Typ inzerátu",
         data: {
-            1: "prodej",
-            2: "pronájem",
-            3: "dražba",
-            4: "podíl",
+            1: "Prodej",
+            2: "Pronájem",
+            3: "Dražba",
+            4: "Podíl",
         }
     },
     category_main_cb: {
-        name: "Typ nemovitosti",
+        name: "Kategorie",
         data: {
-            1: "byt",
-            2: "dům",
-            3: "pozemek",
-            4: "komerční",
-            5: "ostatní",
+            1: "Byt",
+            2: "Dům",
+            3: "Pozemek",
+            4: "Komerční",
+            5: "Ostatní",
         }
     },
     category_sub_cb: {
-        name: "Specifikace",
+        name: "Typ nemovitosti",
         data: {
             2: "1+kk",
             3: "1+1",
@@ -88,6 +86,13 @@ export const API_FIELDS_MAPPING: IApiFieldsMapping = {
 export const translateAPIField = (field: string, value: number): string => {
     return API_FIELDS_MAPPING[field]?.data[value] || value.toString();
 };
+// example: translateAPIField("category_type_cb", 1) => "prodej"
+
+// translate the other way around
+export const translateAPIFieldReverse = (field: string, value: string): number => {
+    return parseInt(Object.entries(API_FIELDS_MAPPING[field]?.data).find(([key, val]) => val === value)?.[0] || value);
+};
+// example: translateAPIFieldReverse("category_type_cb", "prodej") => 1
 
 export const PER_PAGE_OPTIONS = [10, 20, 50, 100];
 
@@ -107,20 +112,5 @@ export interface IEstate {
     [key: string]: any;
 }
 
-export const formatDataForTable = (estates: IEstate[]): IJsonTableProps => {
-    return {
-        rows: estates.map((estate: IEstate) => {
-            return {
-                "Název": estate.name,
-                "Typ": translateAPIField("category_type_cb", estate.seo.category_type_cb),
-                "Kategorie": translateAPIField("category_main_cb", estate.seo.category_main_cb),
-                "Typ nemovitosti": translateAPIField("category_sub_cb", estate.seo.category_sub_cb),
-                "Lokalita": estate.locality,
-                "Cena": formatCurrency(estate.price),
-                "Fotka": <a href={estate._links.images[0].href} target="_blank" rel="noopener noreferrer">Zobrazit fotku</a>,
-                "Detail": <a href={`estate/${estate.hash_id}`}>Zobrazit detail</a>,
-            }
-        })
-    }
-}
+
 
