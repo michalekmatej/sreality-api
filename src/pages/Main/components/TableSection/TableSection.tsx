@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import { IJsonTableProp, JsonToTable } from "@components/JsonToTable/JsonToTable";
 import { TableNavigation } from "@components/TableNavigation/TableNavigation";
 import { IFilters } from "@components/FilterSelectDropdowns/FilterSelectDropdowns";
@@ -5,17 +6,18 @@ import { formatDataForTable, formatDataToAPI, IEstate } from "@globals/globals";
 import { API } from "@lib/api";
 import { CircularProgress } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState, useMemo, useEffect } from "react";
 
 interface ITableProps {
     page: number;
+    perPage: number;
     setPage: (page: number) => void;
+    setPerPage: (perPage: number) => void;
     filters: IFilters;
 }
 
-export const TableSection = ({ page, setPage, filters }: ITableProps) => {
+export const TableSection = ({ page, perPage, setPage, setPerPage, filters }: ITableProps) => {
+
     // -------- state --------
-    const [perPage, setPerPage] = useState(10);
     const [localUpdates, setLocalUpdates] = useState<IEstate[]>([]);
 
     // -------- onUpdate function --------
@@ -23,13 +25,15 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
         const updatedEstate = formatDataToAPI(newData, estate);
         setLocalUpdates((prev) => {
             const index = prev.findIndex((update) => update.hash_id === estate.hash_id);
-            return index === -1 ? [...prev, updatedEstate] : prev.map((update, i) => i === index ? updatedEstate : update);
+            return index === -1
+                ? [...prev, updatedEstate]
+                : prev.map((update, i) => (i === index ? updatedEstate : update));
         });
     };
 
-    // -------- fetching data --------
+    // -------- fetch data --------
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['estates', page, perPage, filters],
+        queryKey: ["estates", page, perPage, filters],
         queryFn: () => API.fetchEstates(page, perPage, filters),
     });
 
@@ -43,17 +47,16 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
 
     // -------- pagination --------
     const totalResults = data?.result_size;
-    const maxPage = useMemo(() => totalResults ? Math.ceil(totalResults / perPage) : 1, [totalResults, perPage]);
+    const maxPage = useMemo(() => (totalResults ? Math.ceil(totalResults / perPage) : 1), [totalResults, perPage]);
     const dataToDisplay = formatDataForTable(estates, onUpdate);
 
-    // -------- pre-fetching --------
+    // -------- prefetching --------
     const queryClient = useQueryClient();
     useEffect(() => {
         if (!maxPage) return;
-
         const prefetch = (page: number) => {
             queryClient.prefetchQuery({
-                queryKey: ['estates', page, perPage, filters],
+                queryKey: ["estates", page, perPage, filters],
                 queryFn: () => API.fetchEstates(page, perPage, filters),
             });
         };
@@ -62,11 +65,12 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
         if (page > 1) prefetch(page - 1);
     }, [page, maxPage, perPage, filters, queryClient]);
 
-    // -------- page navigation functions --------
+    // -------- page navigation --------
     const goToPreviousPage = () => page > 1 && setPage(page - 1);
     const goToNextPage = () => maxPage && page < maxPage && setPage(page + 1);
 
-    // -------- rendering --------
+
+    // -------- render --------
     if (isLoading) return <div className="loading placeholder"><CircularProgress size={30} /></div>;
     if (isError) return <div className="error placeholder">{error.message}</div>;
 
@@ -83,9 +87,10 @@ export const TableSection = ({ page, setPage, filters }: ITableProps) => {
             <TableNavigation
                 page={page}
                 numberOfPages={maxPage || 0}
+                currentPerPage={perPage}
                 goToNextPage={goToNextPage}
                 goToPreviousPage={goToPreviousPage}
-                onChangePageRange={(event) => setPerPage(event.target.value)}
+                onChangePageRange={(event) => setPerPage(Number(event.target.value))}
             />
         </section>
     );

@@ -84,22 +84,7 @@ body {
 
     }
 
-    .placeholder {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
     .table-navigation {
-        // button,
-        // p,
-        // select,
-        // span {
-        //     font-size: .75rem;
-
-        // }
-
         display: grid;
         grid-template: ". main perPage" 1fr / 1fr 1fr 1fr;
 
@@ -130,4 +115,11 @@ body {
             }
         }
     }
+}
+
+.placeholder {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

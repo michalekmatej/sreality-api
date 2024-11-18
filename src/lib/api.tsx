@@ -4,7 +4,7 @@ export class API {
 
     public static fetchEstates = async (page: number = 1, perPage: number = 10, filters: IFilters = {}) => {
         if (page <= 0 || perPage <= 0) {
-            throw new Error('Error fetching data: Page and perPage must be greater than 0');
+            throw new Error('Error fetching data: page and per_page must be greater than 0');
         }
 
         try {

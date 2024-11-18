@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Navbar } from "@components/Navbar/Navbar";
 import { FilterSelectDropdowns, IFilters } from "@components/FilterSelectDropdowns/FilterSelectDropdowns";
 import { TableSection } from "./components/TableSection/TableSection";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { PER_PAGE_OPTIONS } from "@globals/globals";
 import "./MainPage.scss";
 
 const MainPage = () => {
@@ -10,47 +11,40 @@ const MainPage = () => {
 
     // -------- state --------
     const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(10); // Default value
     const [filterValues, setFilterValues] = useState<IFilters>({});
 
     // -------- initialize state --------
     useEffect(() => {
-        // init page number from URL
-        const initialPage = searchParams.get('page') || '1';
-        setPage(Number(initialPage));
+        const initialPage = searchParams.get("page") || "1";
+        const initialPerPage = searchParams.get("per_page") || String(PER_PAGE_OPTIONS[0]);
 
-        // get filters from URL, excluding the 'page' parameter
+        setPage(Number(initialPage));
+        setPerPage(Number(initialPerPage));
+
         const filters: IFilters = {};
         searchParams.forEach((value, key) => {
-            if (key !== 'page') {
+            if (key !== "page" && key !== "per_page") {
                 filters[key] = value;
             }
         });
         setFilterValues(filters);
     }, [searchParams]);
 
-    // -------- update URL with filters --------
+    // -------- update URL --------
     useEffect(() => {
-        if (filterValues) {
-            // set filters in URL, but don't reset page unless filters change
-            if (Object.keys(filterValues).length > 0) {
-                setSearchParams({ page: '1', ...filterValues });
-            } else {
-                setSearchParams({ page: page.toString() });
-            }
-        }
-    }, [filterValues, page, setSearchParams]);
+        setSearchParams({
+            page: page.toString(),
+            "per_page": perPage.toString(),
+            ...filterValues
+        });
+    }, [page, perPage, filterValues, setSearchParams]);
 
-    // -------- update URL when page changes --------
-    useEffect(() => {
-        if (page) {
-            setSearchParams({ page: page.toString(), ...filterValues });
-        }
-    }, [page, filterValues, setSearchParams]);
 
-    // -------- handle filter changes --------
+    // -------- handle filter change --------
     const handleFilterChange = (newFilters: IFilters) => {
         setFilterValues(newFilters);
-        setPage(1);
+        setPage(1); // Reset page when filters change
     };
 
     return (
@@ -64,7 +58,9 @@ const MainPage = () => {
                 key={page}
                 filters={filterValues}
                 page={page}
+                perPage={perPage}
                 setPage={setPage}
+                setPerPage={setPerPage}
             />
         </>
     );
