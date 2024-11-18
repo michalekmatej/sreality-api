@@ -21,6 +21,8 @@ export const TableNavigation = ({
 }: ITableNavigationProps) => {
     const selectId = useId();
 
+    console.log(currentPerPage);
+
     return (
         <div className="table-navigation">
             <div className="main flex">
@@ -38,6 +40,12 @@ export const TableNavigation = ({
             <div className="per-page flex">
                 <label htmlFor={`${selectId}-s`}>Počet výsledků</label>
                 <select id={`${selectId}-s`} value={currentPerPage} onChange={onChangePageRange}>
+                    {/* hidden option for the current value if it's not in PER_PAGE_OPTIONS */}
+                    {!PER_PAGE_OPTIONS.includes(currentPerPage) && (
+                        <option value={currentPerPage} style={{ display: 'none' }}>
+                            {currentPerPage}
+                        </option>
+                    )}
                     {PER_PAGE_OPTIONS.map((option) => (
                         <option key={option} value={option}>
                             {option}
