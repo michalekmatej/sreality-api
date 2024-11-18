@@ -49,4 +49,5 @@ export class API {
             throw new Error(`Error fetching data: ${error.message}`);
         }
     };
+    
 }

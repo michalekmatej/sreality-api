@@ -21,7 +21,7 @@ const MainPage = () => {
         // get filters from URL, excluding the 'page' parameter
         const filters: IFilters = {};
         searchParams.forEach((value, key) => {
-            if (key !== 'page') { 
+            if (key !== 'page') {
                 filters[key] = value;
             }
         });
@@ -58,9 +58,10 @@ const MainPage = () => {
             <Navbar />
             <FilterSelectDropdowns
                 filters={filterValues}
-                setFilters={handleFilterChange} 
+                setFilters={handleFilterChange}
             />
             <TableSection
+                key={page}
                 filters={filterValues}
                 page={page}
                 setPage={setPage}
