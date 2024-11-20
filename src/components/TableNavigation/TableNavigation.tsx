@@ -21,7 +21,7 @@ export const TableNavigation = ({
 }: ITableNavigationProps) => {
     const selectId = useId();
 
-    console.log(currentPerPage);
+    // console.log(currentPerPage);
 
     return (
         <div className="table-navigation">

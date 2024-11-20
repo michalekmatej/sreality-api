@@ -93,7 +93,7 @@ export const translateAPIField = (field: string, value: number): string => {
 
 // translate the other way around
 export const translateAPIFieldReverse = (field: string, value: string): number => {
-    return parseInt(Object.entries(API_FIELDS_MAPPING[field]?.data).find(([key, val]) => val === value)?.[0] || value);
+    return parseInt(Object.entries(API_FIELDS_MAPPING[field]?.data).find(([val]) => val === value)?.[0] || value);
 };
 // example: translateAPIFieldReverse("category_type_cb", "prodej") => 1
 
